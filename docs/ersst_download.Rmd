@@ -51,14 +51,11 @@ dl_years = data.frame(start = seq(1854, lubridate::year(Sys.Date()) - 5, 5),
 
 dl_years$end[dl_years$end == max(dl_years$end)] <- end_date
 
-base::system.time(
-  ERSST_data <- dl_years %>% 
+ERSST_data <- dl_years %>% 
     dplyr::group_by(date_index) %>% 
     dplyr::group_modify(~ERSST_sub_dl(.x)) %>% 
     dplyr::ungroup() %>% 
     dplyr::select(lon, lat, t, temp)
-) #  seconds, ~100 seconds per batch
-
 
 ERSST_month <- ERSST_data %>% 
   mutate(lonlat = paste0(lon,lat),
