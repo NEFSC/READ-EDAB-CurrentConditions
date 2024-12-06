@@ -26,7 +26,7 @@ dist_mean <- dist %>%
   dplyr::summarise(alongshelf = mean(ASDIST, na.rm = T), 
                    depth = mean(DEPTH, na.rm = T),
                    coast = mean(DTEOC, na.rm = T)) %>%
-  dplyr::filter(!YR == 2020)
+  dplyr::filter(!YR %in% c(2020,2023))
 
 #write output
 write.csv(x = dist_mean, file = here::here("data/species_dist_spring.csv"), row.names = FALSE)
