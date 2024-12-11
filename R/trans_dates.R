@@ -52,11 +52,19 @@ fall_trans <- daily_sst %>%
   dplyr::group_by(Location,Y) %>%
   dplyr::summarise(falltrans = min(Date))
 
+#max date = 
+max_date <- daily_sst %>%
+  dplyr::group_by(Location,Y) %>%
+  dplyr::filter(roll_mean_sst == max(roll_mean_sst)) %>%
+  dplyr::select(Location, Y, Date)
+
 #merge
 #calculate summer length = fall transition - spring transition
 trans_dates <- dplyr::left_join(spr_trans,fall_trans,by=c("Location","Y")) %>%
-  dplyr::mutate(sumlen = falltrans-sprtrans) %>%
-  dplyr::rename(EPU = Location, Year = Y)
+  dplyr::mutate(sumlen = falltrans-sprtrans) 
+
+trans_dates <- dplyr::left_join(trans_dates,max_date,by=c("Location","Y")) %>%
+  dplyr::rename(EPU = Location, Year = Y, maxday = Date)
 
 #write output file
 write.csv(x = trans_dates, file = here::here("data/trans_dates.csv"), row.names = FALSE)
