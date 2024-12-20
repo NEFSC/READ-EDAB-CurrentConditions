@@ -6,12 +6,13 @@
 #author: Sarah Weisberg
 #contact: sarah.weisberg@noaa.gov
 
-# Fri Nov 22 14:34:28 2024 ------------------------------
+# Fri Dec 20 16:44:49 2024 ------------------------------
 
 #install packages
 library(here)
 library(dplyr)
 library(zoo)
+library(ggplot2)
 
 #load full dataset
 daily_sst_full <- read.csv(here::here("data-raw/kevin-output/TS_SHP_adv rep MAB GOM GBK NES SCSPoly.csv"))
@@ -25,10 +26,10 @@ daily_sst <- daily_sst_full %>%
                 Y >=1982)
   
 #calculate regional averages
-#30 year baseline = 1982-2011
+#30 year baseline = 1991-2020
 mean_sst <- daily_sst %>%
   dplyr::group_by(Location) %>%
-  dplyr::filter(Y >=1982 & Y <= 2011) %>%
+  dplyr::filter(Y >=1991 & Y <= 2020) %>%
   dplyr::summarise(mean_sst = mean(Mean))
 
 #add mean to daily
